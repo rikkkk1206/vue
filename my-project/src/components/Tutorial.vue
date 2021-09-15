@@ -28,7 +28,7 @@
           </td>
           <td class="button">
             <!-- 削除ボタンのモック -->
-            <button v-on:click="openModal()">削除</button>
+            <button @click="openModal(item)">削除</button>
             <!--<button v-on:click="doRemove(item)">削除</button>-->
           </td>
         </tr>
@@ -43,15 +43,25 @@
       <button type="submit">追加</button>
     </form>
 
-    <h3 v-if="rems">
+    <h3 v-if="removeWindow">
+      <MyModal
+        v-show="removeWindow"
+        @rem="doRemove(remItem)"
+        @clo="closeModal()"
+      />
+    </h3>
+  </div>
+</template>
+
+<!--     <h3 v-if="rems">
       <MyModal
         v-show="removeWindow"
         @rem="doRemove(item)"
         @clo="closeModal()"
       />
     </h3>
-  </div>
-</template>
+ -->
+
 
 <script>
 import todoStorange from "../plugins/todoStorage";
@@ -63,7 +73,7 @@ export default {
   data() {
     return {
       removeWindow: false,
-      rems: false,
+      remItem: "",
       todos: [],
       uid: 0,
       options: [
@@ -129,19 +139,17 @@ export default {
     doChangeState: function (item) {
       item.state = item.state ? 0 : 1;
     },
-    doRemove: function (item) {
-      const index = this.todos.indexOf(item);
+    doRemove: function (remItem) {
+      const index = this.todos.indexOf(remItem);
       this.todos.splice(index, 1);
       this.removeWindow = false;
-      this.rems = false;
     },
-    openModal() {
+    openModal(item) {
       this.removeWindow = true;
-      this.rems = true;
+      this.remItem = item;
     },
     closeModal() {
       this.removeWindow = false;
-      this.rems = false;
     },
   },
 };

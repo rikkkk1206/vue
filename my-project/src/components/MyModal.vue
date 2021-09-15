@@ -16,22 +16,22 @@ export default {
 
 <style>
 #overlay {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  z-index: 30;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-}
-#content {
-  z-index: 2;
+  box-sizing: border-box;
+  display: inline-block;
+  z-index: 20;
+  position: relative;
   width: 50%;
-  padding-top: 5em;
-  padding-bottom: 5em;
-  text-align: center;
+  max-width: 600px;
+  padding: 30px 30px 15px;
+  border-radius: 2px;
+  background: #fff;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+  vertical-align: middle;
+  border: 2px solid;
+  border-color: black;
+}
+
+#content {
+  padding: 10px 20px;
 }
 </style>

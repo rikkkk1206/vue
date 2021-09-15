@@ -5,23 +5,6 @@
         label.label
       }}
     </label>
-    <div class="example-modal-window">
-      <p>ボタンを押すとモーダルウィンドウが開きます</p>
-      <button @click="openModal">開く</button>
-
-      <!-- コンポーネント MyModal -->
-      <MyModal @close="closeModal" v-if="modal">
-        <!-- default スロットコンテンツ -->
-        <p>Vue.js Modal Window!</p>
-        <div><input v-model="message" /></div>
-        <!-- /default -->
-        <!-- footer スロットコンテンツ -->
-        <template slot="footer">
-          <button @click="doSend">送信</button>
-        </template>
-        <!-- /footer -->
-      </MyModal>
-    </div>
     <table>
       <!-- テーブルヘッダー -->
       <thead>
@@ -45,7 +28,8 @@
           </td>
           <td class="button">
             <!-- 削除ボタンのモック -->
-            <button v-on:click="doRemove(item)">削除</button>
+            <button v-on:click="openModal()">削除</button>
+            <!--<button v-on:click="doRemove(item)">削除</button>-->
           </td>
         </tr>
       </tbody>
@@ -58,6 +42,14 @@
       <!-- 追加ボタンのモック -->
       <button type="submit">追加</button>
     </form>
+
+    <h3 v-if="rems">
+      <MyModal
+        v-show="removeWindow"
+        @rem="doRemove(item)"
+        @clo="closeModal()"
+      />
+    </h3>
   </div>
 </template>
 
@@ -70,7 +62,8 @@ export default {
   name: "Tutorial",
   data() {
     return {
-      modal: false,
+      removeWindow: false,
+      rems: false,
       todos: [],
       uid: 0,
       options: [
@@ -116,9 +109,6 @@ export default {
     },
   },
   methods: {
-    openModal() {
-      this.modal = true;
-    },
     // Todo追加の処理
     doAdd: function () {
       // refで名前をつけておいた要素を参照
@@ -142,6 +132,16 @@ export default {
     doRemove: function (item) {
       const index = this.todos.indexOf(item);
       this.todos.splice(index, 1);
+      this.removeWindow = false;
+      this.rems = false;
+    },
+    openModal() {
+      this.removeWindow = true;
+      this.rems = true;
+    },
+    closeModal() {
+      this.removeWindow = false;
+      this.rems = false;
     },
   },
 };

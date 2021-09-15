@@ -1,1 +1,12 @@
-{"editor.formatOnSave": true,}
+{
+    "workbench.editor.enablePreview": false,
+    "workbench.editor.enablePreviewFromQuickOpen": false,
+    "editor.renderWhitespace": "all",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.bracketPairColorization.enabled": true,
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": true,
+    "terminal.integrated.scrollback": 10000,
+}

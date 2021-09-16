@@ -22,57 +22,47 @@
           <td>{{ item.comment }}</td>
           <td class="state">
             <!-- 状態変更ボタンのモック -->
-            <button v-on:click="doChangeState(item)">
+            <b-button v-on:click="doChangeState(item)">
               {{ labels[item.state] }}
-            </button>
+            </b-button>
           </td>
           <td class="button">
             <!-- 削除ボタンのモック -->
-            <button @click="openModal(item)">削除</button>
+            <b-button @click="openModal(item)">削除</b-button>
             <!--<button v-on:click="doRemove(item)">削除</button>-->
           </td>
         </tr>
       </tbody>
     </table>
 
-    <h2>新しい作業の追加</h2>
-    <form class="add-form" v-on:submit.prevent="doAdd">
-      <!-- コメント入力フォーム -->
-      コメント <input type="text" ref="comment" />
-      <!-- 追加ボタンのモック -->
-      <button type="submit">追加</button>
-    </form>
-
-    <h3 v-if="removeWindow">
-      <MyModal
-        v-show="removeWindow"
-        @rem="doRemove(remItem)"
-        @clo="closeModal()"
-      />
-    </h3>
+    <div>
+      <form class="add-form" v-on:submit.prevent="doAdd">
+        <div class="form-group">
+          <label for="addTodoComment">新規ToDo：</label>
+          <input
+            type="text"
+            id="addTodoComment"
+            ref="comment"
+            placeholder="ToDoを入力してください."
+          />
+          <b-button type="submit">追加</b-button>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
-<!--     <h3 v-if="rems">
-      <MyModal
-        v-show="removeWindow"
-        @rem="doRemove(item)"
-        @clo="closeModal()"
-      />
-    </h3>
- -->
-
-
 <script>
 import todoStorange from "../plugins/todoStorage";
-import MyModal from "./MyModal.vue";
+//import MyModal from "./MyModal.vue";
 
 export default {
-  components: { MyModal },
+  //components: { MyModal },
   name: "Tutorial",
   data() {
     return {
       removeWindow: false,
+      rems: false,
       remItem: "",
       todos: [],
       uid: 0,
@@ -89,7 +79,7 @@ export default {
   computed: {
     labels() {
       return this.options.reduce(function (a, b) {
-        return Object.assign(a, { [b.value]: b.value });
+        return Object.assign(a, { [b.value]: b.label });
       }, {});
       // キーから見つけやすいように、次のように加工したデータを作成
       // {0: '作業中', 1: '完了', -1: 'すべて'}
@@ -142,14 +132,26 @@ export default {
     doRemove: function (remItem) {
       const index = this.todos.indexOf(remItem);
       this.todos.splice(index, 1);
-      this.removeWindow = false;
     },
     openModal(item) {
-      this.removeWindow = true;
       this.remItem = item;
-    },
-    closeModal() {
-      this.removeWindow = false;
+      this.$bvModal
+        .msgBoxConfirm("削除しますか？", {
+          size: "sm",
+          buttonSize: "sm",
+          okVariant: "danger",
+          okTitle: "はい",
+          cancelTitle: "いいえ",
+          footerClass: "p-2",
+          hideHeaderClose: false,
+          centered: true,
+        })
+        .then((value) => {
+          this.rems = value;
+          if (this.rems) {
+            this.doRemove(this.remItem);
+          }
+        });
     },
   },
 };

@@ -24,9 +24,9 @@
           <td>{{ item.comment }}</td>
           <td class="state">
             <!-- 状態変更ボタンのモック -->
-            <b-button v-on:click="doChangeState(item)">
-              {{ labels[item.state] }}
-            </b-button>
+              <b-badge pill variant="primary" v-on:click="doChangeState(item)">
+                {{ labels[item.state] }}
+              </b-badge>
           </td>
           <td class="button">
             <!-- 削除ボタンのモック -->
@@ -178,4 +178,13 @@ export default {
 </script>
 
 <style scoped>
+  button {
+    border: none;
+    border-radius: 20px;
+    line-height: 24px;
+    padding: 0 8px;
+    background: #0099e4;
+    color: #fff;
+    cursor: pointer;
+  }
 </style>

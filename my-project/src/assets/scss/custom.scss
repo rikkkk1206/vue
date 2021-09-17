@@ -1,0 +1,8 @@
+// 以下にBootStrap-vueのスタイルを追記する(坂井)
+// node_modules/bootstrap/scss/_variables.scss に
+// 変更可能な変数があるのでそこからさがしてやる
+// 例 $primary: red;
+// ↑　primaryColorを一括で赤に変更できる
+// cssは書いた順なのでimport文より上に書くこと
+$primary: #0099e4;
+@import "~bootstrap/scss/bootstrap";

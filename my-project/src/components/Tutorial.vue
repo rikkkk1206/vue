@@ -10,7 +10,8 @@
       <thead>
         <tr>
           <th class="id">ID</th>
-          <th class="comment">コメント</th>
+          <th class="addDate">追加日</th>
+          <th class="comment">やること</th>
           <th class="state">状態</th>
           <th class="button">-</th>
         </tr>
@@ -19,6 +20,7 @@
         <!-- [1] ここに <tr> で ToDo の要素を1行づつ繰り返し表示したい -->
         <tr v-for="item in computedTodos" v-bind:key="item.id">
           <th>{{ item.id }}</th>
+          <td>{{ item.addDate }}</td>
           <td>{{ item.comment }}</td>
           <td class="state">
             <!-- 状態変更ボタンのモック -->
@@ -45,7 +47,7 @@
             ref="comment"
             placeholder="ToDoを入力してください."
           />
-          <b-button type="submit">追加</b-button>
+          <b-button type="submit" @click="doGetDate">追加</b-button>
         </div>
       </form>
     </div>
@@ -61,6 +63,8 @@ export default {
   name: "Tutorial",
   data() {
     return {
+      date: "",
+      week: ["(日)", "(月)", "(火)", "(水)", "(木)", "(金)", "(土)"],
       removeWindow: false,
       rems: false,
       remItem: "",
@@ -109,6 +113,17 @@ export default {
     },
   },
   methods: {
+    doGetDate() {
+      let current_date = new Date();
+      this.date =
+        current_date.getMonth() +
+        1 +
+        "月" +
+        current_date.getDate() +
+        "日" +
+        this.week[current_date.getDay()];
+    },
+
     // Todo追加の処理
     doAdd: function () {
       // refで名前をつけておいた要素を参照
@@ -117,10 +132,14 @@ export default {
       if (!comment.value.length) {
         return;
       }
+
+      this.doGetDate();
+
       // { 新しいID, コメント, 作業状態 }というオブジェクトを現在のtodosリストへpush
       // 作業状態「state」はデフォルト「作業中=0」で作成
       this.todos.push({
         id: this.uid++,
+        addDate: this.date,
         comment: comment.value,
         state: 0,
       });

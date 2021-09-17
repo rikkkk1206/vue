@@ -136,8 +136,9 @@ export default {
     openModal(item) {
       this.remItem = item;
       this.$bvModal
-        .msgBoxConfirm("削除しますか？", {
-          size: "sm",
+        .msgBoxConfirm(this.remItem.comment, {
+          title: "このTodoを削除しますか？",
+          size: "lg",
           buttonSize: "sm",
           okVariant: "danger",
           okTitle: "はい",

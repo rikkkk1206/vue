@@ -24,9 +24,9 @@
           <td>{{ item.comment }}</td>
           <td class="state">
             <!-- 状態変更ボタンのモック -->
-              <b-badge pill variant="primary" v-on:click="doChangeState(item)">
-                {{ labels[item.state] }}
-              </b-badge>
+            <b-badge pill variant="primary" v-on:click="doChangeState(item)">
+              {{ labels[item.state] }}
+            </b-badge>
           </td>
           <td class="button">
             <!-- 削除ボタンのモック -->
@@ -44,7 +44,7 @@
           <input
             type="text"
             id="addTodoComment"
-            ref="comment"
+            v-model="commentAdd"
             placeholder="ToDoを入力してください."
           />
           <b-button type="submit" @click="doGetDate">追加</b-button>
@@ -78,6 +78,7 @@ export default {
       // 選択している options の value を記憶するためのデータ
       // 初期値を「-1」つまり「すべて」にする
       current: -1,
+      commentAdd: "",
     };
   },
   computed: {
@@ -127,12 +128,12 @@ export default {
     // Todo追加の処理
     doAdd: function () {
       // refで名前をつけておいた要素を参照
-      var comment = this.$refs.comment;
+      /*       var comme = this.commentAdd;
       // 入力がなければ何もしないで return
-      if (!comment.value.length) {
+      if (!comme.value.length) {
         return;
       }
-
+ */
       this.doGetDate();
 
       // { 新しいID, コメント, 作業状態 }というオブジェクトを現在のtodosリストへpush
@@ -140,10 +141,10 @@ export default {
       this.todos.push({
         id: this.uid++,
         addDate: this.date,
-        comment: comment.value,
+        comment: this.commentAdd,
         state: 0,
       });
-      comment.value = "";
+      this.commentAdd = "";
     },
     doChangeState: function (item) {
       item.state = item.state ? 0 : 1;
@@ -178,13 +179,13 @@ export default {
 </script>
 
 <style scoped>
-  button {
-    border: none;
-    border-radius: 20px;
-    line-height: 24px;
-    padding: 0 8px;
-    background: #0099e4;
-    color: #fff;
-    cursor: pointer;
-  }
+button {
+  border: none;
+  border-radius: 20px;
+  line-height: 24px;
+  padding: 0 8px;
+  background: #0099e4;
+  color: #fff;
+  cursor: pointer;
+}
 </style>

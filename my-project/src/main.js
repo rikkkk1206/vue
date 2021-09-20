@@ -4,7 +4,7 @@ import router from './router' //追加
 import BootstrapVue from 'bootstrap-vue' // add
 import 'bootstrap/dist/css/bootstrap.css' // add
 import 'bootstrap-vue/dist/bootstrap-vue.css' // add
-import './assets/scss/custom.scss' //変更
+//import './assets/scss/custom.scss' //変更
 Vue.use(BootstrapVue) // add
 
 Vue.config.productionTip = false

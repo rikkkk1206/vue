@@ -12,6 +12,7 @@
           <th class="id">ID</th>
           <th class="addDate">追加日</th>
           <th class="comment">やること</th>
+          <th class="deadline">期限</th>
           <th class="state">状態</th>
           <th class="button">-</th>
         </tr>
@@ -22,6 +23,7 @@
           <th>{{ item.id }}</th>
           <td>{{ item.addDate }}</td>
           <td>{{ item.comment }}</td>
+          <td>{{ item.deadline }}</td>
           <td class="state">
             <!-- 状態変更ボタンのモック -->
             <b-badge pill variant="primary" v-on:click="doChangeState(item)">
@@ -38,18 +40,27 @@
     </table>
 
     <div>
-      <form class="add-form" v-on:submit.prevent="doAdd">
-        <div class="form-group">
-          <label for="addTodoComment">新規ToDo：</label>
-          <input
+      <b-form v-on:submit.prevent="doAdd">
+        <b-form-group label="新規ToDo：">
+          <b-form-input
             type="text"
             id="addTodoComment"
             v-model="commentAdd"
             placeholder="ToDoを入力してください."
-          />
-          <b-button type="submit" @click="doGetDate">追加</b-button>
-        </div>
-      </form>
+            required
+          ></b-form-input>
+        </b-form-group>
+        <b-form-group label="期限：">
+          <b-form-datepicker
+            v-model="deadline"
+            :value-as-date="true"
+            id="addDeadline"
+            placeholder="実行期限を指定してください."
+            required
+          ></b-form-datepicker>
+        </b-form-group>
+        <b-button type="submit" @click="doGetDate">追加</b-button>
+      </b-form>
     </div>
   </div>
 </template>
@@ -79,6 +90,8 @@ export default {
       // 初期値を「-1」つまり「すべて」にする
       current: -1,
       commentAdd: "",
+      deadline: "",
+      adDeadline: "",
     };
   },
   computed: {
@@ -124,6 +137,15 @@ export default {
         "日" +
         this.week[current_date.getDay()];
     },
+    adDate(deadline) {
+      this.adDeadline =
+        deadline.getMonth() +
+        1 +
+        "月" +
+        deadline.getDate() +
+        "日" +
+        this.week[deadline.getDay()];
+    },
 
     // Todo追加の処理
     doAdd: function () {
@@ -135,6 +157,7 @@ export default {
       }
  */
       this.doGetDate();
+      this.adDate(this.deadline);
 
       // { 新しいID, コメント, 作業状態 }というオブジェクトを現在のtodosリストへpush
       // 作業状態「state」はデフォルト「作業中=0」で作成
@@ -142,9 +165,12 @@ export default {
         id: this.uid++,
         addDate: this.date,
         comment: this.commentAdd,
+        deadline: this.adDeadline,
         state: 0,
       });
       this.commentAdd = "";
+      this.deadline = "";
+      this.adDeadline = "";
     },
     doChangeState: function (item) {
       item.state = item.state ? 0 : 1;

@@ -5,6 +5,7 @@ import Signup from '@/components/Signup'
 import Signin from '@/components/Signin'
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
+
 Vue.use(Router)
 
 let router = new Router({
@@ -16,7 +17,8 @@ let router = new Router({
         {
             path: '/',
             name: 'Tutorial',
-            component: Tutorial
+            component: Tutorial,
+            meta: { requiresAuth: true }
         },
         {
             path: '/signup',
@@ -32,12 +34,13 @@ let router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
+    console.log("kiteru");
     const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
     if (requiresAuth) {
         // このルートはログインされているかどうか認証が必要です。
         // もしされていないならば、ログインページにリダイレクトします。
         const auth = getAuth();
-        onAuthStateChanged(auth, function (user) {
+        onAuthStateChanged(auth, (user) => {
             if (user) {
                 next()
             } else {
@@ -47,6 +50,7 @@ router.beforeEach((to, from, next) => {
                 })
             }
         })
+
     } else {
         next() // next() を常に呼び出すようにしてください!
     }

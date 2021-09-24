@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import Firebase from "../firebase/index";
 
 export default {
   name: "Signup",
@@ -23,15 +23,11 @@ export default {
     };
   },
   methods: {
-    signUp: function () {
-      const auth = getAuth();
-      createUserWithEmailAndPassword(auth, this.username, this.password)
-        .then((user) => {
-          alert("Create account: ", user.email);
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
+    async signUp() {
+      let isSuccessedSignup = await Firebase.siup(this.username, this.password);
+      if (isSuccessedSignup) {
+        this.$router.push("/signin");
+      }
     },
   },
 };

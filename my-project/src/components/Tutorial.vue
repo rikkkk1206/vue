@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h2>User: {{ name }}<b-button @click="signOut">Sign out</b-button></h2>
     <label v-for="label in options" v-bind:key="label.value">
       <input type="radio" v-model="current" v-bind:value="label.value" />{{
         label.label
@@ -67,6 +68,7 @@
 
 <script>
 import todoStorange from "../plugins/todoStorage";
+import { getAuth, signOut } from "firebase/auth";
 //import MyModal from "./MyModal.vue";
 
 export default {
@@ -127,6 +129,12 @@ export default {
     },
   },
   methods: {
+    signOut: function () {
+      const auth = getAuth();
+      signOut(auth).then(() => {
+        this.$router.push("/signin");
+      });
+    },
     doGetDate() {
       let current_date = new Date();
       this.date =

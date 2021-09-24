@@ -1,5 +1,9 @@
 <template>
   <div>
+    <h2>
+      User: {{ getUserEmail }}{{ isSignedIn
+      }}<b-button @click="signOut">Sign out</b-button>
+    </h2>
     <label v-for="label in options" v-bind:key="label.value">
       <input type="radio" v-model="current" v-bind:value="label.value" />{{
         label.label
@@ -67,7 +71,9 @@
 
 <script>
 import todoStorange from "../plugins/todoStorage";
+import Firebase from "../firebase/index";
 //import MyModal from "./MyModal.vue";
+import { mapGetters } from "vuex";
 
 export default {
   //components: { MyModal },
@@ -95,6 +101,8 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(["getUserEmail", "isSignedIn"]),
+
     labels() {
       return this.options.reduce(function (a, b) {
         return Object.assign(a, { [b.value]: b.label });
@@ -127,6 +135,12 @@ export default {
     },
   },
   methods: {
+    async signOut() {
+      let isSuccessedLogout = await Firebase.logout();
+      if (isSuccessedLogout) {
+        this.$router.push("/signin");
+      }
+    },
     doGetDate() {
       let current_date = new Date();
       this.date =

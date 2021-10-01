@@ -1,4 +1,5 @@
 import * as firebase from "firebase/app"
+import { getFirestore, doc, setDoc } from "firebase/firestore/lite"
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth"
 import store from '../store/index'
 
@@ -59,5 +60,14 @@ export default {
             store.commit('onAuthStateChanged', user);
             store.commit('onUserStatusChanged', user.uid ? true : false);
         });
+    },
+    userInfoStore(userEmailName) {
+        console.log("aa");
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        setDoc(doc(db, 'test1', userEmailName), {
+            name: userEmailName
+        })
     }
 }

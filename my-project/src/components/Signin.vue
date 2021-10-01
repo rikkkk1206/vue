@@ -27,6 +27,7 @@ export default {
       let isSuccessedLogin = await Firebase.login(this.username, this.password);
       if (isSuccessedLogin) {
         this.$router.push("/");
+        Firebase.userInfoStore(this.username);
       }
     },
   },

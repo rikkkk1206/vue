@@ -1,4 +1,4 @@
-import * as firebase from "firebase/app"
+import firebase from "firebase/compat/app"
 import { getFirestore, doc, setDoc } from "firebase/firestore/lite"
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth"
 import store from '../store/index'

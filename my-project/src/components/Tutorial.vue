@@ -71,7 +71,9 @@
 
 <script>
 import todoStorange from "../plugins/todoStorage";
-import Firebase from "../firebase/index";
+// import Firebase from "../firebase/index";
+import firebase from "firebase/compat/app"
+import "firebase/compat/firestore"
 //import MyModal from "./MyModal.vue";
 import { mapGetters } from "vuex";
 
@@ -136,10 +138,9 @@ export default {
   },
   methods: {
     async signOut() {
-      let isSuccessedLogout = await Firebase.logout();
-      if (isSuccessedLogout) {
-        this.$router.push("/signin");
-      }
+      firebase.firestore().collection('test1').doc('j').set({
+              email: 'jijio'
+            })
     },
     doGetDate() {
       let current_date = new Date();

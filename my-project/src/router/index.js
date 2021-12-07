@@ -34,7 +34,7 @@ let router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-    console.log("kiteru");
+    //console.log("kiteru");
     const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
     if (requiresAuth) {
         // このルートはログインされているかどうか認証が必要です。
